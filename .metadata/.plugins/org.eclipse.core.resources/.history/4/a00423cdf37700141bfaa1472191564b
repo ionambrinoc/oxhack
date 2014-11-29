@@ -1,0 +1,23 @@
+package com.lostoffline.app;
+
+import android.location.*;
+
+public class Locator {
+	
+	public Locator() {
+		
+	}
+	
+	public double getLatitude() {
+		double latitude = 0;
+		
+		return latitude;
+	}
+	
+	public double getLongitude() {
+		double longitude;
+		
+		return longitude = 0;
+	}
+
+}

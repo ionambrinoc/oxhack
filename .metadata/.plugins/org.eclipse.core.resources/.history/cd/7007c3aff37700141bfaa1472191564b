@@ -1,0 +1,7 @@
+package com.lostoffline.app;
+
+import android.location.*;
+
+public class Locator {
+
+}
