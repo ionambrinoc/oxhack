@@ -1,0 +1,27 @@
+package com.lostoffline.app;
+
+import android.content.Context;
+import android.location.*;
+import android.content.ContentResolver;
+
+public class Locator {
+	
+	LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+	
+	public Locator() {
+		
+	}
+	
+	public double getLatitude() {
+		double latitude = 0;
+		
+		return latitude;
+	}
+	
+	public double getLongitude() {
+		double longitude;
+		
+		return longitude = 0;
+	}
+
+}

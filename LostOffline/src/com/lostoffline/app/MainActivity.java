@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Build;
 
@@ -29,6 +31,15 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+        
+        Button mButton = (Button)findViewById(R.id.button1);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            	public void onClick(View view) {
+            		EditText mEdit   = (EditText)findViewById(R.id.editText1);
+            		String destination = mEdit.getText().toString();
+            		sendIt(view, destination);
+              	}
+        });
     }
 
 
@@ -51,10 +62,13 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     
+
     
-    public void onClick(View arg0, String destination) {
+    
+    private void sendIt(View arg0, String destination) {
     	double latitude = gpstracker.getLatitude();
     	double longitude = gpstracker.getLongitude();
+    	System.out.println("sending "+destination+" "+latitude+" "+longitude);
     	boolean success = mSender.sendSMSMessage("insertnumberhere",
     		"directions "+latitude+" "+longitude+" "+destination);
     	Toast.makeText(this, "Message sent " + (
