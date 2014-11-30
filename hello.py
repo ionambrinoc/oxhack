@@ -19,6 +19,7 @@ def index():
     payload={'current':current,'desired':desired}
     url='http://school/index.php'	
     r = requests.post(url,data=payload)
+    print(payload)
     print(r.text)
     response=r.text
     message = client.messages.create(body=response,

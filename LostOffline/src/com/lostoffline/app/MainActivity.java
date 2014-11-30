@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.provider.Settings;
+import org.json.simple.JSONObject;
 
 
 
@@ -140,7 +141,8 @@ public class MainActivity extends ActionBarActivity {
     	System.out.println("sending "+destination+" "+latitude+" "+longitude);
     	if (!exceptionRaised) {
 	    	boolean success = mSender.sendSMSMessage("+441727260228",
-	    		latitude+", "+longitude+", "+destination);
+	    		"{\"current:\""+'"'+latitude+","+longitude+"'"+",\"desired:\"" +
+                        '"'+destination+"\"}");
 	    	Toast.makeText(this, "Message sent " + (
 	    		success ? "successfully" : "unsuccessfully"), 
 	    		Toast.LENGTH_SHORT).show();
