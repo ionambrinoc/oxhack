@@ -30,16 +30,4 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>appcompat_v7</name>
-			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/appcompat_v7</locationURI>
-		</link>
-		<link>
-			<name>gridlayout_v7</name>
-			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/gridlayout_v7</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
