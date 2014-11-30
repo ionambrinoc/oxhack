@@ -25,7 +25,8 @@
             android:ems="10"
             android:inputType="textMultiLine"
             android:lines="@integer/textbox_maxlines"
-            android:maxLines="@integer/textbox_maxlines" >
+            android:maxLines="@integer/textbox_maxlines"
+            android:text="TAKE ME HOME DAMMIT" >
 
             <requestFocus />
         </EditText>
