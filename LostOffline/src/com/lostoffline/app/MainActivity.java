@@ -1,5 +1,7 @@
 package com.lostoffline.app;
 
+import java.util.Locale;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.app.Activity;
@@ -21,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.provider.Settings;
-import org.json.simple.JSONObject;
 
 
 
@@ -139,9 +140,12 @@ public class MainActivity extends ActionBarActivity {
     private void sendIt(View arg0, String destination) throws NullPointerException {
     	_getLocation();
     	System.out.println("sending "+destination+" "+latitude+" "+longitude);
+    	
+    	String language = Locale.getDefault().getLanguage();
+    	
     	if (!exceptionRaised) {
 	    	boolean success = mSender.sendSMSMessage("+441727260228",
-	    		"{\"current:\""+'"'+latitude+","+longitude+"'"+",\"desired:\"" +
+	    		"{\"current\":"+'"'+longitude+","+latitude+"\""+",\"desired\":" +
                         '"'+destination+"\"}");
 	    	Toast.makeText(this, "Message sent " + (
 	    		success ? "successfully" : "unsuccessfully"), 
