@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LostOffline</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="button">Give me directions!</string>
+    <string name="esri">Powered by ESRI - The Location Platform</string>
+    <string name="howto">If you're lost and have no data connection, we can help you find your way via SMS. Simply type your search terms below and click the button and you will receive directions via SMS.&quot;</string>
+
+</resources>

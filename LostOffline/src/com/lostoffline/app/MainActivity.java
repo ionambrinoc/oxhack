@@ -2,7 +2,15 @@ package com.lostoffline.app;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,25 +19,83 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Build;
+import android.provider.Settings;
 
 
 
 public class MainActivity extends ActionBarActivity {
 	
-	SendSMS mSender = new SendSMS();
-	GPSTracker gpstracker = new GPSTracker(this);
+	private SendSMS mSender = new SendSMS();
+	private double latitude;
+	private double longitude;
+	private boolean exceptionRaised;
+	
+	private void exitApp() {
+		Intent intent = new Intent(Intent.ACTION_MAIN); //exit.
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+	}
+	
+	private void _getLocation() {
+	    // Get the location manager
+	    LocationManager locationManager = (LocationManager) 
+	            getSystemService(LOCATION_SERVICE);
+	    Criteria criteria = new Criteria();
+	    String bestProvider = locationManager.getBestProvider(criteria, false);
+	    Location location = locationManager.getLastKnownLocation(bestProvider);
+	    LocationListener loc_listener = new LocationListener() {
+
+	        public void onLocationChanged(Location l) {}
+
+	        public void onProviderEnabled(String p) {}
+
+	        public void onProviderDisabled(String p) {}
+
+	        public void onStatusChanged(String p, int status, Bundle extras) {}
+	    };
+	    locationManager.requestLocationUpdates(bestProvider, 0, 0, loc_listener);
+	    location = locationManager.getLastKnownLocation(bestProvider);
+	    try {
+	        latitude = location.getLatitude();
+	        longitude = location.getLongitude();
+	    } catch (NullPointerException e) {
+	    	exceptionRaised = true;
+	        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage("You have no location services activated. Please activate or we can't direct you :(");
+            builder1.setCancelable(true);
+            builder1.setPositiveButton("Location Settings",
+                    new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    exceptionRaised = false;
+                }
+                
+            });
+            builder1.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                    exitApp();
+                }
+
+            });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+	    }
+	}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	exceptionRaised = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
+                                       .commit();
         }
         
         Button mButton = (Button)findViewById(R.id.button1);
@@ -40,8 +106,12 @@ public class MainActivity extends ActionBarActivity {
             		sendIt(view, destination);
               	}
         });
+        
+        
     }
 
+
+    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,30 +135,20 @@ public class MainActivity extends ActionBarActivity {
 
     
     
-    private void sendIt(View arg0, String destination) {
-    	double latitude = gpstracker.getLatitude();
-    	double longitude = gpstracker.getLongitude();
+    private void sendIt(View arg0, String destination) throws NullPointerException {
+    	_getLocation();
     	System.out.println("sending "+destination+" "+latitude+" "+longitude);
-    	boolean success = mSender.sendSMSMessage("insertnumberhere",
-    		"directions "+latitude+" "+longitude+" "+destination);
-    	Toast.makeText(this, "Message sent " + (
-    		success ? "successfully" : "unsuccessfully"), 
-    		Toast.LENGTH_SHORT).show();
+    	if (!exceptionRaised) {
+	    	boolean success = mSender.sendSMSMessage("+441727260228",
+	    		latitude+", "+longitude+", "+destination);
+	    	Toast.makeText(this, "Message sent " + (
+	    		success ? "successfully" : "unsuccessfully"), 
+	    		Toast.LENGTH_SHORT).show();
+    	}
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
 
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-    }
 }
