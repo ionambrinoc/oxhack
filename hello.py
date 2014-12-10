@@ -13,10 +13,12 @@ app = Flask(__name__)
 def index():
     phonenumber = request.values.get('From', None)
     body = request.values.get('Body', None)
+    print(body)
     action = json.loads(body)
     current = action['current']
     desired = action['desired']
-    payload={'current':current,'desired':desired}
+    lang = action['lang']
+    payload={'current':current,'desired':desired,'lang':lang}
     url='http://school/index.php'	
     r = requests.post(url,data=payload)
     print(payload)
